@@ -55,3 +55,32 @@ export class LoginRoutingModule {}
 4. LoginModule中的组件要被Login.module.ts装饰  
 5. 在app.module.ts中导入导出`LoginModule`（有业务的模块在app.module.ts中导入）  
 
+## SharedModule
+SharedModule用来导入导出共享模块。  
+SharedModule用来导出和装饰全局共享组件。  
+
+```js
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SharedComponentComponent } from './shared-component/shared-component.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+  ],
+  exports: [
+    // 导出CommonModule后，其他模块就只需导入SharedModule即可
+    CommonModule,
+    // 全局共享的组件
+    SharedComponentComponent,
+  ],
+  declarations: [
+    SharedComponentComponent,
+  ],
+  entryComponents: [
+    // 一些如对话框之类的弹出型组件需要从一开始就预加载好，这样的组件除了要导出和装饰，还需要在这里占位
+  ],
+})
+export class SharedModule { }
+```
+

@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpModule } from '@angular/http';
 import { HeaderComponent } from './header/header.component';
 // 导入共享模块
-// import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 // 移动端需要的一些拖拽等操作
 // import 'hammerjs';
@@ -32,7 +32,7 @@ import { AppRoutingModule } from '../app-routing.module';
 @NgModule({
   imports: [
     HttpModule,
-    // SharedModule,
+    SharedModule,
     AppRoutingModule,
     // ServicesModule.forRoot(),
     // AppStoreModule,
