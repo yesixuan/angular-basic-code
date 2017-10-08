@@ -5,15 +5,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedComponentComponent } from './shared-component/shared-component.component';
+import {MatButtonModule} from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
+    MatButtonModule,
   ],
   exports: [
     // 导出CommonModule后，其他模块就只需导入SharedModule即可
     CommonModule,
     SharedComponentComponent,
+    MatButtonModule,
   ],
   declarations: [
     SharedComponentComponent,
