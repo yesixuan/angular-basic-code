@@ -84,3 +84,113 @@ import { SharedComponentComponent } from './shared-component/shared-component.co
 export class SharedModule { }
 ```
 
+## material design
+如何使用material组件，并且自定义主题以及切换主题？
+
+### angualr与material结合
+1. 安装Angular Material and Angular CDK  
+```bash
+npm install --save @angular/material @angular/cdk
+```
+2. 安装动画模块（貌似这个模块已经有了），并且导入动画模块  
+```bash
+npm install --save @angular/animations
+```
+
+```js
+/* CoreModule中 */
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// ...
+imports: [
+  // ...
+  // 动画模块一般放在所有模块最后，否则可能出现一些异常
+  BrowserAnimationsModule,
+],
+```
+3. 导入组件对应的模块  
+```js
+/* SharedModule中 */  
+// vsCode中好像没有了自动导入material模块的功能
+import { MatButtonModule } from '@angular/material';
+
+// ...
+imports: [
+  MatButtonModule,
+],
+exports: [
+  MatButtonModule,
+],
+```
+4. 在任何组件内都可以使用已导入的material组件。 
+
+### 更多配置
+1. 设定主题  
+```css
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+```
+2. 移动端组件拖动支持  
+```bash
+npm install --save hammerjs
+```  
+```js
+import 'hammerjs';
+```
+3. 图标支持  
+```html
+<!-- index.html中（官方图标库被墙，所以用360镜像来代替） -->
+
+<link rel="stylesheet" href="//lib.baomitu.com/material-design-icons/3.0.0/iconfont/material-icons.min.css">
+```  
+4. 导入自带主题  
+```scss
+/* style.scss中 */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+```
+
+### 自定义主题  
+1. 创建自定义主题文件  
+```scss
+/* theme.scss */
+@import '~@angular/material/theming';
+@include mat-core();
+
+$candy-app-primary: mat-palette($mat-indigo);
+$candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
+$candy-app-theme:   mat-light-theme($candy-app-primary, $candy-app-accent);
+
+@include angular-material-theme($candy-app-theme);
+
+// 黑夜模式
+$dark-primary: mat-palette($mat-blue-grey);
+$dark-accent:  mat-palette($mat-amber, A200, A100, A400);
+$dark-warn:    mat-palette($mat-deep-orange);
+$dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+.unicorn-dark-theme {
+  @include angular-material-theme($dark-theme);
+}
+```  
+2. 导入自定义主题  
+```scss
+/* style.scss中 */
+@import 'theme.scss';
+```  
+3. 切换主题
+```html
+<!-- app.component.html中 -->
+<!-- 这个div是整个应用的容器 -->
+<div [class.unicorn-dark-theme]="darkTheme"></div>
+```
+4. 主题覆盖至弹出层  
+```js
+import { OverlayContainer } from '@angular/material';
+
+// ...
+constructor(private oc: OverlayContainer) {}
+
+switchTheme(dark) {
+  this.darkTheme = dark;
+  this.oc.themeClass = dark ? 'unicorn-dark-theme' : null;
+}
+```

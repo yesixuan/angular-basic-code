@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  theme: boolean = false;
+  
+  toggleTheme() {
+    this.theme = !this.theme;
+  }
 }

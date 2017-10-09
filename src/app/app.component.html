@@ -1,7 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
+<div style="text-align:center" [class.unicorn-dark-theme]="theme">
   <app-header></app-header>
-
+  <button (click)="toggleTheme()">changeTheme</button>
   <main>
     <router-outlet></router-outlet>
   </main>
