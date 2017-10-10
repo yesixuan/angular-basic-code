@@ -24,6 +24,7 @@ import 'rxjs/add/observable/concat';*/
 
 // 将路由模块从根模块移到coreModule中
 import { AppRoutingModule } from '../app-routing.module';
+import { AppStoreModule } from '../ngrx/index';
 // import { ServicesModule } from '../services/services.module';
 
 // 大盘如ngrx模块
@@ -36,6 +37,7 @@ import { AppRoutingModule } from '../app-routing.module';
     AppRoutingModule,
     // ServicesModule.forRoot(),
     // AppStoreModule,
+    AppStoreModule,
     // 动画模块一般放在所有模块最后，否则可能出现一些异常
     BrowserAnimationsModule,
   ],

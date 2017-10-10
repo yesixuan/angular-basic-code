@@ -84,3 +84,117 @@ import { SharedComponentComponent } from './shared-component/shared-component.co
 export class SharedModule { }
 ```
 
+## redux你的angular
+很认同一句话，rxJs与ngrx是angular的倚天剑与屠龙刀。下面唠一唠怎么使用屠龙刀。  
+准备工作先做好：
+```bash
+cnpm install @ngrx/store --save
+cnpm install @ngrx/store-devtools --save
+cnpm install @ngrx/effects --save
+cnpm install @ngrx/router-store --save
+cnpm i --save ngrx-store-freeze
+```  
+
+### 基本使用
+1. 创建目录结构  
+---|ngrx
+--------|actions
+------------|test.action.ts
+--------|reducers
+------------|test.reducer.ts
+--------|index.ts （ngrx模块，整合reducer）  
+2. action定义  
+3. 分reducer定义
+```js
+import * as testActions from '../actions/test.action';
+
+// 分State类型
+export interface State {
+  counter: number
+};
+
+// 初始化分state
+export const initialState: State = {
+  counter: 666
+};
+
+export function reducer(state = initialState, action: {type: string, payload: any} ): State {
+  switch (action.type) {
+    case testActions.DECREMENT: {
+      return {
+        counter: state.counter - 1
+      };
+    }
+    case testActions.INCREMENT: {
+      return {
+        counter: state.counter + 1
+      };
+    }
+    default: {
+      return state;
+    }
+  }
+}
+```  
+4. ngrx模块定义  
+```js
+import { NgModule } from '@angular/core';
+import { StoreModule, combineReducers, ActionReducer, compose } from '@ngrx/store';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+// fromTest包含initialState、reducer
+import * as fromTest from './reducers/test.reducer';
+
+export interface State {
+  test: fromTest.State
+};
+
+const initialState: State = {
+  test: fromTest.initialState
+};
+
+const reducers = {
+  test: fromTest.reducer
+}
+
+@NgModule({
+  imports: [
+    // StoreModule.forRoot({ routerReducer: routerReducer }),
+    StoreModule.forRoot(reducers),
+    StoreRouterConnectingModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25 //  Retains last 25 states
+    })
+  ]
+})
+export class AppStoreModule {}
+```  
+5. 将ngrx模块引入CoreModule中（代码省略）  
+6. 呈现state中的数据  
+```js
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import { INCREMENT } from '../../ngrx/actions/test.action';
+import * as fromRoot from '../../ngrx';
+
+// ...
+counter: Observable<number>;
+
+// 注入store（得到的是一个流，请注意）
+constructor(private store: Store<fromRoot.State>) {
+  this.counter = store.select(state => state.test.counter)
+}
+
+// 派发动作
+increment(){
+  this.store.dispatch({ type: INCREMENT });
+}
+```  
+
+```html
+<div (click)="increment()">Current Count: {{ counter | async }}</div>
+```
+
+
+
