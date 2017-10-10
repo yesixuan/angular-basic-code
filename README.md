@@ -97,12 +97,12 @@ cnpm i --save ngrx-store-freeze
 
 ### 基本使用
 1. 创建目录结构  
----|ngrx
---------|actions
-------------|test.action.ts
---------|reducers
-------------|test.reducer.ts
---------|index.ts （ngrx模块，整合reducer）  
+---|ngrx  
+--------|actions  
+------------|test.action.ts  
+--------|reducers  
+------------|test.reducer.ts  
+--------|index.ts （ngrx模块，整合reducer）    
 2. action定义  
 3. 分reducer定义
 ```js
