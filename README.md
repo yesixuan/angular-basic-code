@@ -196,5 +196,84 @@ increment(){
 <div (click)="increment()">Current Count: {{ counter | async }}</div>
 ```
 
+### 开发环境中自动打印日志
+1. 定义logger函数  
+```js
+function logger(reducer: ActionReducer<State>): ActionReducer<State> {
+  return function(state: State, action: any): State {
+    console.log('state', state);
+    console.log('action', action);
+
+    return reducer(state, action);
+  };
+}
+```
+2. 根据环境插入中间件  
+```js
+const metaReducers: MetaReducer<State>[] = !environment.production
+? [logger] // 更多中间件往数组里面加元素即可
+: [];
+```  
+3. 引入reducer  
+```js
+imports: [
+  // ...
+  StoreModule.forRoot(reducers, { metaReducers }),
+]
+```
+
+### 给action添加类型限制
+1. actions重定义,type类型基本为string，我们需要确定的是payload的类型    
+```js
+import { Action } from '@ngrx/store';
+
+export const INCREMENT  = '[Counter] Increment';
+export const DECREMENT  = '[Counter] Decrement';
+export const RESET      = '[Counter] Reset';
+
+export class Increment implements Action {
+  readonly type = INCREMENT;
+}
+
+export class Decrement implements Action {
+  readonly type = DECREMENT;
+}
+
+export class Reset implements Action {
+  readonly type = RESET;
+
+  // payload被限定为number类型
+  constructor(public payload: number) {}
+}
+
+// 导出type类
+export type All
+  = Increment
+  | Decrement
+  | Reset;
+```
+
+2. reducer中使用强类型action  
+```js
+import * as testActions from '../actions/test.action';
+
+export type Action = testActions.All;
+// ...
+export function reducer(state: number = 0, action: Action): State {
+  switch(action.type) {
+    // ...
+    case CounterActions.RESET: {
+      return action.payload; // typed to number
+    }    
+
+    default: {
+      return state;
+    }
+  }
+}
+```
+
+
+
 
 
