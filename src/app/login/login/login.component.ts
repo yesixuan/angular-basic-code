@@ -23,5 +23,6 @@ export class LoginComponent implements OnInit {
 
   increment(){
     this.store.dispatch({ type: INCREMENT });
+    
 	}
 }

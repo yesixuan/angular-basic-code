@@ -7,6 +7,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 
 import * as fromTest from './reducers/test.reducer';
 import { environment } from '../../environments/environment';
+import { AppEffectsModule } from './effects/index';
 
 export interface State {
   test: fromTest.State
@@ -38,6 +39,7 @@ const metaReducers: MetaReducer<State>[] = !environment.production
   imports: [
     // StoreModule.forRoot({ routerReducer: routerReducer }),
     StoreModule.forRoot(reducers, { metaReducers }),
+    AppEffectsModule,
     StoreRouterConnectingModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25 //  Retains last 25 states

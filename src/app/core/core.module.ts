@@ -11,20 +11,24 @@ import { SharedModule } from '../shared/shared.module';
 // import 'hammerjs';
 
 // rxjs相关导入
-/*import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/count';
 import 'rxjs/add/operator/reduce';
+import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/concat';*/
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/concat';
+import 'rxjs/add/operator/do';
 
 // 将路由模块从根模块移到coreModule中
 import { AppRoutingModule } from '../app-routing.module';
 import { AppStoreModule } from '../ngrx/index';
+// import { AppEffectsModule } from '../ngrx/effects/index';
 // import { ServicesModule } from '../services/services.module';
 
 // 大盘如ngrx模块
@@ -38,6 +42,7 @@ import { AppStoreModule } from '../ngrx/index';
     // ServicesModule.forRoot(),
     // AppStoreModule,
     AppStoreModule,
+    // AppEffectsModule,
     // 动画模块一般放在所有模块最后，否则可能出现一些异常
     BrowserAnimationsModule,
   ],
