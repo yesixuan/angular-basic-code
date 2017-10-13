@@ -273,6 +273,56 @@ export function reducer(state: number = 0, action: Action): State {
 }
 ```
 
+### effects
+1. 创建effects文件夹，并且在内部创建effects模块文件以及各个分effects模块  
+2. 创建分effects  
+```js
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable } from 'rxjs/Observable';
+
+import * as testActions from '../actions/test.action';
+
+export type Action = testActions.All;
+
+@Injectable()
+export class TestEffects {
+  @Effect() 
+  // 接管testActions.INCREMENT动作
+  increment$ = this.actions$.ofType(testActions.INCREMENT)
+    .mergeMap(action => Observable.interval(1000))
+    .mapTo({type: testActions.DECREMENT}) // 派发你真正需要派发的动作
+    
+  constructor(
+    private actions$: Actions
+  ) {}      
+}
+```  
+3. 创建effects模块  
+```js
+import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { TestEffects } from './test.effect';
+
+@NgModule({
+  imports: [ 
+    EffectsModule.forRoot([TestEffects]),
+  ]
+})
+export class AppEffectsModule {}
+```  
+4. 在ngrx总模块中导入effects模块  
+```js
+import { AppEffectsModule } from './effects/index';
+// ...
+imports: [
+  // 最好在reducer被导入之后
+  AppEffectsModule,
+]
+```
+
+
+
 
 
 
